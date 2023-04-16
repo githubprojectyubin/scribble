@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scribble to Text</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+        }
+        canvas {
+            border: 1px solid #000;
+            cursor: crosshair;
+        }
+        #result {
+            margin-top: 20px;
+            max-width: 400px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scribble to Text</h1>
+    <canvas id="scribbleCanvas" width="400" height="300"></canvas>
+    <button id="convertButton">Convert Scribble to Text</button>
+    <div id="result"></div>
+
+    <!-- Include Tesseract.js using a CDN -->
+    <!-- v4 -->
+    <script src='https://unpkg.com/tesseract.js@4.0.2/dist/tesseract.min.js'></script>
+
+    <!-- Include the custom JavaScript code -->
+    <script>
+        // Canvas drawing
+        const canvas = document.getElementById("scribbleCanvas");
+        const ctx = canvas.getContext("2d");
+        let drawing = false;
+
+        canvas.addEventListener("mousedown", (e) => {
+            drawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        });
+
+        canvas.addEventListener("mousemove", (e) => {
+            if (!drawing) return;
+            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            ctx.stroke();
+        });
+
+        canvas.addEventListener("mouseup", () => {
+            drawing = false;
+        });
+
+        canvas.addEventListener("mouseout", () => {
+            drawing = false;
+        });
+
+        // Convert scribble to text using Tesseract.js
+        const convertButton = document.getElementById("convertButton");
+        const result = document.getElementById("result");
+
+        convertButton.addEventListener("click", async () => {
+            console.log("Started");
+            result.textContent = "Recognizing...";
+            const { data: { text } } = await Tesseract.recognize(canvas, "eng", { logger: console.log });
+            console.log("Result");
+            console.log(`Recognized text: ${text}`);
+            console.log("Result End");
+            result.textContent = text;
+        });
+    </script>
+</body>
+</html>
