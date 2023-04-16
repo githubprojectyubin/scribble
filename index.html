@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-    <h1>Scribble to Text</h1>
+    <h1>Scribble to Text 1</h1>
     <canvas id="scribbleCanvas" width="400" height="300"></canvas>
     <button id="convertButton">Convert Scribble to Text</button>
     <div id="result"></div>
@@ -40,25 +40,34 @@
         const ctx = canvas.getContext("2d");
         let drawing = false;
 
-        canvas.addEventListener("mousedown", (e) => {
-            drawing = true;
-            ctx.beginPath();
-            ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-        });
+        function startDrawing(e) {
+        e.preventDefault();
+        drawing = true;
+        const [clientX, clientY] = e.type === "touchstart" ? [e.touches[0].clientX, e.touches[0].clientY] : [e.clientX, e.clientY];
+        ctx.beginPath();
+        ctx.moveTo(clientX - canvas.offsetLeft, clientY - canvas.offsetTop);
+        }
 
-        canvas.addEventListener("mousemove", (e) => {
-            if (!drawing) return;
-            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-            ctx.stroke();
-        });
+        function draw(e) {
+        e.preventDefault();
+        if (!drawing) return;
+        const [clientX, clientY] = e.type === "touchmove" ? [e.touches[0].clientX, e.touches[0].clientY] : [e.clientX, e.clientY];
+        ctx.lineTo(clientX - canvas.offsetLeft, clientY - canvas.offsetTop);
+        ctx.stroke();
+        }
 
-        canvas.addEventListener("mouseup", () => {
-            drawing = false;
-        });
+        function stopDrawing() {
+        drawing = false;
+        }
 
-        canvas.addEventListener("mouseout", () => {
-            drawing = false;
-        });
+        canvas.addEventListener("mousedown", startDrawing);
+        canvas.addEventListener("touchstart", startDrawing);
+        canvas.addEventListener("mousemove", draw);
+        canvas.addEventListener("touchmove", draw);
+        canvas.addEventListener("mouseup", stopDrawing);
+        canvas.addEventListener("mouseout", stopDrawing);
+        canvas.addEventListener("touchend", stopDrawing);
+        canvas.addEventListener("touchcancel", stopDrawing);
 
         // Convert scribble to text using Tesseract.js
         const convertButton = document.getElementById("convertButton");
