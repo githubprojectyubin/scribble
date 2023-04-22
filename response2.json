@@ -1,0 +1,18 @@
+{
+  "INTRO": "${GREET}${NAME}$t",
+  "GREET": "Hey${COMMON_TERM}",
+  "COMMON_TERM": " there, ",
+  "NAME": "${TITLE}${LAST_NAME}",
+  "TITLE": "Dr.",
+  "LAST_NAME": " Smith",
+  "INFO": "You have ${NUM_MESSAGES} new messages and ${NUM_EVENTS} upcoming events.",
+  "NUM_MESSAGES": "5",
+  "NUM_EVENTS": "3",
+  "EVENTS": "Today's events include ${EVENT_LIST}.",
+  "EVENT_LIST": "${EVENT1}${EVENT2}${EVENT3}",
+  "EVENT1": " Team Meeting,",
+  "EVENT2": " Project Deadline,",
+  "EVENT3": " Client Presentation",
+  "CONCLUSION": "Have a great day, ${COMMON_TERM}${CLOSING}",
+  "CLOSING": "and good luck!"
+}
