@@ -1,0 +1,3 @@
+{
+“GREETINGS”: “${SALUTE},$t” “SALUTE”: ”hi${COMMON_TERM}”, “COMMON_TERM”: “there!”
+}
